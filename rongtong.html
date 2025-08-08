@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <!-- Crucial for mobile viewing -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>新融通AI量化交易</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        /* Mobile-First Responsive Design */
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        .slide {
+            width: 100%;
+            max-width: 1280px; /* Max width for desktop */
+            min-height: 720px;
+            position: relative;
+            margin: 20px auto; /* Centering and spacing */
+            overflow: hidden; /* Prevents content from spilling out */
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .horizontal-line {
+            height: 1px;
+            width: 100%;
+        }
+
+        .vertical-line {
+            width: 1px;
+            height: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+        }
+
+        .glow {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        
+        /* Shared styles from all pages */
+        .chart-icon { position: absolute; opacity: 0.7; color: rgba(255, 215, 0, 0.3); animation: pulse 4s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+        .content-item, .milestone, .challenge-card, .highlight-box, .team-card, .risk-card, .process-card, .advantage-card, .vision-card { transition: all 0.3s ease; }
+        .content-item:hover, .milestone:hover, .challenge-card:hover, .highlight-box:hover, .team-card:hover, .risk-card:hover, .process-card:hover, .advantage-card:hover, .vision-card:hover { transform: translateY(-5px); }
+        .icon-container { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255, 215, 0, 0.2); transition: all 0.3s ease; }
+        .content-item:hover .icon-container, .milestone:hover .icon-container, .team-card:hover .icon-box, .risk-card:hover .icon-container, .process-card:hover .icon-container, .advantage-card:hover .icon-container { background: rgba(255, 215, 0, 0.4); transform: scale(1.1); }
+        .axis text { fill: #cccccc; font-size: 12px; }
+        .axis path, .axis line { stroke: rgba(255, 255, 255, 0.2); }
+        .bar { fill: rgba(255, 215, 0, 0.8); transition: all 0.3s ease; }
+        .bar:hover { fill: rgba(255, 215, 0, 1); }
+        .feature-card { background: rgba(26, 38, 57, 0.8); border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 12px; transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); border-color: rgba(255, 215, 0, 0.5); }
+        .quote-box { position: relative; border-left: 3px solid rgba(255, 215, 0, 0.7); }
+        .quote-box:before { content: '"'; position: absolute; top: -20px; left: -15px; font-size: 60px; color: rgba(255, 215, 0, 0.3); font-family: serif; }
+        .quote-box:after { content: '"'; position: absolute; bottom: -40px; right: 0; font-size: 60px; color: rgba(255, 215, 0, 0.3); font-family: serif; }
+
+    </style>
+</head>
+<body class="bg-black">
+
+    <!-- FROM PAGE_1.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center justify-center p-8 text-center">
+        <div class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-wider glow">新融通</div>
+        <div class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-200 mb-6"> AI量化交易 </div>
+        <div class="text-lg md:text-2xl text-gray-200 mb-10 max-w-3xl"> AI驱动的Alpha策略量化交易平台 </div>
+        <div class="mt-10 text-lg md:text-xl text-white border-t border-yellow-500/30 pt-6 px-10"> 让中国投资者投有所得 </div>
+        <div class="absolute bottom-4 right-4 text-gray-400 text-xs md:text-sm"> 2025-08-06 </div>
+    </section>
+
+    <!-- FROM PAGE_2.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-4xl md:text-5xl font-bold text-white mb-12 tracking-wider glow">CONTENTS</div>
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-chart-line text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">市场洞察</h3>
+                    <p class="text-gray-300 mt-1 text-sm">行业背景/投资者困境/量化交易蓝海</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第3-5页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-building text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">公司介绍</h3>
+                    <p class="text-gray-300 mt-1 text-sm">我们的愿景与团队</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第6页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-cogs text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">策略解析</h3>
+                    <p class="text-gray-300 mt-1 text-sm">Alpha引擎/核心交易逻辑/风控体系</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第7-9页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-robot text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">产品方案</h3>
+                    <p class="text-gray-300 mt-1 text-sm">全流程自动化交易系统</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第10页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-award text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">价值主张</h3>
+                    <p class="text-gray-300 mt-1 text-sm">智能交易的核心优势</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第11页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-handshake text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">合作共赢</h3>
+                    <p class="text-gray-300 mt-1 text-sm">新融通招商代理计划</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第12页</p>
+                </div>
+            </div>
+            <div class="content-item flex items-center p-3 rounded-lg md:col-span-2">
+                <div class="icon-container mr-4 flex-shrink-0" style="width:50px; height:50px;"><i class="fas fa-flag-checkered text-yellow-300 text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">结束语</h3>
+                    <p class="text-gray-300 mt-1 text-sm">让中国投资者投有所得</p>
+                    <p class="text-yellow-300/70 mt-1 text-xs">第13页</p>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 2 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_3.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow">市场洞察 - 行业背景与机遇</div>
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-1/2 bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="icon-container mr-3" style="width:40px; height:40px;"><i class="fas fa-chart-line text-yellow-300"></i></div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">中国资本市场30年</h3>
+                </div>
+                <p class="text-gray-300 mb-4 text-sm">中国证券市场成立已有30载，经历了股权改革、融资融券、创业板、科创板、注册制、沪港通、深港通等多次革新完善。</p>
+                <div class="mt-6 space-y-3">
+                    <div class="flex items-center milestone p-2 rounded"><i class="fas fa-landmark text-yellow-300/70 mr-3"></i><span class="text-white text-sm">三大载体：券商、基金、银行发展如火如荼</span></div>
+                    <div class="flex items-center milestone p-2 rounded"><i class="fas fa-building text-yellow-300/70 mr-3"></i><span class="text-white text-sm">金融产业公司崛起</span></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="icon-container mr-3" style="width:40px; height:40px;"><i class="fas fa-robot text-yellow-300"></i></div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">量化交易蓝海</h3>
+                </div>
+                <div class="bg-gray-900/50 p-4 rounded-lg mb-4 border-l-4 border-yellow-300/70">
+                    <p class="text-white text-base font-bold">尚需完善的领域</p>
+                    <p class="text-gray-300 text-sm">量化交易是目前中国资本市场中尚未完善发展的领域，未出现绝对的龙头公司。</p>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center milestone p-2 rounded"><i class="fas fa-globe text-yellow-300/70 mr-3"></i><span class="text-white">全球对比：美国75%，香港超50%，大陆仅约5%</span></div>
+                    <div class="flex items-center milestone p-2 rounded"><i class="fas fa-lightbulb text-yellow-300/70 mr-3"></i><span class="text-white">预测：中国量化投资占比或至20%~30%</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-auto pt-4">
+            <div class="bg-yellow-300/10 p-4 rounded-lg border border-yellow-300/30">
+                <p class="text-white font-bold text-sm md:text-base"><i class="fas fa-bullseye text-yellow-300 mr-2"></i>市场机遇：中国量化交易市场存在巨大发展空间，政策与市场双轮驱动。</p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 3 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_4.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-6 tracking-wider glow text-center">市场洞察 - 个人投资者的普遍困境</div>
+        <p class="text-gray-300 text-base md:text-lg mb-8 text-center max-w-4xl"> 据统计，中国A股投资者数量已高达1.78亿，仍有<span class="text-yellow-300 font-bold">73.2%</span>的散户年度收益为负。核心挑战如下： </p>
+        <div class="flex flex-col md:flex-row w-full items-center">
+            <div class="w-full md:w-3/5 pr-0 md:pr-8">
+                <div class="challenge-card p-4 rounded-lg mb-4 flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width: 50px; height: 50px;"><i class="fas fa-brain text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">心态失衡</h3>
+                        <p class="text-gray-300 mt-2 text-sm">无法控制情绪，导致非理性操作。</p>
+                    </div>
+                </div>
+                <div class="challenge-card p-4 rounded-lg mb-4 flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width: 50px; height: 50px;"><i class="fas fa-chart-line text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">技巧不足</h3>
+                        <p class="text-gray-300 mt-2 text-sm">知识浩如烟海，难以形成盈利模式。</p>
+                    </div>
+                </div>
+                <div class="challenge-card p-4 rounded-lg flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width: 50px; height: 50px;"><i class="fas fa-hourglass-half text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">时间缺乏</h3>
+                        <p class="text-gray-300 mt-2 text-sm">无法花费巨量时间盯盘、复盘、选股。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-2/5 flex flex-col items-center justify-center mt-8 md:mt-0">
+                <div class="w-full h-64" id="donut-chart-investors"></div>
+                <p class="mt-4 text-center text-gray-300 text-sm">同时具备三大要素是盈利的最高境界，但<span class="text-yellow-300 font-bold">绝大多数投资者都无法做到</span>。</p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 4 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_5.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow">市场洞察 - 量化交易的蓝海市场</div>
+        <div class="flex flex-col md:flex-row h-full gap-8">
+            <div class="w-full md:w-1/2 space-y-6">
+                <div class="highlight-box p-4 rounded-lg">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-yellow-300/20 flex items-center justify-center mr-3"><i class="fas fa-robot text-yellow-300 text-xl"></i></div>
+                        <h3 class="text-xl font-bold text-white">量化交易概念</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm"> 以先进的数学模型替代人为的主观判断，利用计算机技术从庞大的历史数据中海选能带来超额收益的多种"大概率"事件以制定策略的投资方法。</p>
+                </div>
+                <div class="highlight-box p-4 rounded-lg">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-yellow-300/20 flex items-center justify-center mr-3"><i class="fas fa-rocket text-yellow-300 text-xl"></i></div>
+                        <h3 class="text-xl font-bold text-white">政策与市场双轮驱动</h3>
+                    </div>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li class="flex items-start"><i class="fas fa-landmark text-yellow-300 mt-1 mr-2"></i><span><span class="text-white font-medium">政策支持：</span>国家大力扶持人工智能发展。</span></li>
+                        <li class="flex items-start"><i class="fas fa-chart-line text-yellow-300 mt-1 mr-2"></i><span><span class="text-white font-medium">市场需求：</span>多家券商已开放API接口。</span></li>
+                        <li class="flex items-start"><i class="fas fa-bullseye text-yellow-300 mt-1 mr-2"></i><span><span class="text-white font-medium">市场预测：</span>未来中国量化投资占比或至20%~30%。</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2">
+                <div class="bg-gray-800/50 rounded-lg p-4 h-full">
+                    <h3 class="text-xl font-bold text-white mb-4 text-center">全球量化交易占比对比</h3>
+                    <div class="w-full h-5/6" id="bar-chart-market-share"></div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 5 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_6.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow">公司介绍 - 我们的愿景与团队</div>
+        <p class="text-gray-300 text-base md:text-lg mb-6"> 新融通(Xinrongtong)由资深行业专家创立，致力于将AI量化交易技术引入中国资本市场， 为投资者提供专业、稳定的智能交易解决方案。 </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="team-card p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="icon-box mr-4 flex-shrink-0" style="width:50px; height:50px; border-radius:10px;"><i class="fas fa-user-tie text-yellow-300 text-xl"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">创始人背景</h3>
+                            <ul class="text-gray-300 space-y-1 text-sm">
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>从业16余年，曾任多家投资机构高管</li>
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>8年研发，开发出稳定盈利的交易系统</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="icon-box mr-4 flex-shrink-0" style="width:50px; height:50px; border-radius:10px;"><i class="fas fa-users-cog text-yellow-300 text-xl"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">顶尖研发实力</h3>
+                            <ul class="text-gray-300 space-y-1 text-sm">
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>核心团队具备13年证券行业研发经验</li>
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>曾担任操盘手及知名软件产品总监</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div class="team-card p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="icon-box mr-4 flex-shrink-0" style="width:50px; height:50px; border-radius:10px;"><i class="fas fa-chess text-yellow-300 text-xl"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">精准赛道选择</h3>
+                            <ul class="text-gray-300 space-y-1 text-sm">
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>中国资本市场的刚需产业</li>
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>与国际对比市场空缺巨大</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="icon-box mr-4 flex-shrink-0" style="width:50px; height:50px; border-radius:10px;"><i class="fas fa-handshake text-yellow-300 text-xl"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">强大渠道合作</h3>
+                            <ul class="text-gray-300 space-y-1 text-sm">
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>多家券商已开放三方接口</li>
+                                <li><i class="fas fa-check text-yellow-300/70 mr-2"></i>与金融机构建立战略合作关系</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-auto pt-4 border-t border-gray-700 w-full">
+            <p class="text-center text-yellow-300 text-base md:text-lg italic"> "新融通将为中国量化交易的发展付出毕生心血!" </p>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 6 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_7.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow text-center">策略解析 - 动态多策略Alpha引擎</div>
+        <p class="text-gray-300 text-base md:text-lg mb-8 max-w-4xl text-center"> 新融通的核心并非单一策略，而是一个全自动的、由"多因子筛选+多策略融合"驱动的动态量化投资系统。 </p>
+        <div class="w-full flex flex-col md:flex-row justify-center items-center gap-4">
+            <div class="feature-card p-6 w-full md:w-1/4">
+                <div class="icon-container mx-auto" style="width:60px; height:60px;"><i class="fas fa-filter text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-lg font-bold text-white text-center mb-3">多因子策略池</h3>
+                <p class="text-gray-300 text-center text-sm"> 内置多种成熟Alpha因子策略库，如动量、价值、成长等。 </p>
+            </div>
+            <div class="feature-card p-6 w-full md:w-1/3 transform md:scale-110 border-2 border-yellow-500/50">
+                <div class="icon-container mx-auto" style="width:60px; height:60px;"><i class="fas fa-brain text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-lg font-bold text-white text-center mb-3">策略自适应匹配</h3>
+                <p class="text-gray-300 text-center text-sm"> 系统基于AI算法，为每个标的自动择优匹配最适合的量化策略。 </p>
+            </div>
+            <div class="feature-card p-6 w-full md:w-1/4">
+                <div class="icon-container mx-auto" style="width:60px; height:60px;"><i class="fas fa-sync-alt text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-lg font-bold text-white text-center mb-3">自动化过滤与轮换</h3>
+                <p class="text-gray-300 text-center text-sm"> 自动衡量策略效果，对业绩较差的策略进行自动剔除与轮换。 </p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 7 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_8.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow text-center"><i class="fas fa-cogs text-yellow-300 mr-4"></i>策略解析 - 核心交易逻辑</div>
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="highlight-box p-6 rounded-lg">
+                <h2 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-chart-line text-yellow-300 mr-2"></i> 精准MA均线择时 </h2>
+                <p class="text-gray-300 mb-4 text-sm">经过<span class="text-yellow-300 font-bold">8年研究</span>与<span class="text-yellow-300 font-bold">数千次测试</span>，确立以MA为核心的买卖点参数，精准度达<span class="text-yellow-300 font-bold">80%</span>以上。</p>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="bg-gray-800/50 p-3 rounded-lg"><h3 class="font-bold text-white mb-1"><i class="fas fa-arrow-up text-green-400 mr-2"></i>买入点</h3><p class="text-gray-300">A线 ≥ B点时，系统自动买入</p></div>
+                    <div class="bg-gray-800/50 p-3 rounded-lg"><h3 class="font-bold text-white mb-1"><i class="fas fa-arrow-down text-red-400 mr-2"></i>卖出点</h3><p class="text-gray-300">A线 ≤ B点时，系统自动卖出</p></div>
+                </div>
+            </div>
+            <div class="highlight-box p-6 rounded-lg">
+                <h2 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-clock text-yellow-300 mr-2"></i> 日内择时风控 </h2>
+                <p class="text-gray-300 mb-4 text-sm"><span class="text-yellow-300 font-bold">方案：</span>交易点的判定时间仅设置在<span class="text-yellow-300 font-bold">每日收盘前3分钟</span>。</p>
+                <p class="text-gray-300 text-sm"><span class="text-yellow-300 font-bold">逻辑：</span>此时股价波动最小，能极大降低操作失误率和频繁操作带来的风险。</p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 8 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_9.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow text-center">策略解析 - 机构级风控体系</div>
+        <p class="text-xl text-gray-300 mb-10 text-center max-w-3xl"> 科学的风控体系：应对风险，保障收益 </p>
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="risk-card p-6 rounded-lg">
+                <div class="flex items-center mb-4"><div class="icon-container mr-4" style="width:60px; height:60px;"><i class="fas fa-chart-pie text-yellow-300 text-2xl"></i></div><h3 class="text-xl font-bold text-white">投资组合分散化</h3></div>
+                <p class="text-gray-200 text-sm"><span class="text-yellow-300">目标：</span>极大化地分散非系统性风险，即使碰到"地雷"也不影响整体收益。</p>
+            </div>
+            <div class="risk-card p-6 rounded-lg">
+                <div class="flex items-center mb-4"><div class="icon-container mr-4" style="width:60px; height:60px;"><i class="fas fa-shield-alt text-yellow-300 text-2xl"></i></div><h3 class="text-xl font-bold text-white">动态资金预留</h3></div>
+                <p class="text-gray-200 text-sm"><span class="text-yellow-300">目标：</span>确保每轮操作的起始买入金额不变，损失的只是百分比，而非绝对值。</p>
+            </div>
+            <div class="risk-card p-6 rounded-lg">
+                <div class="flex items-center mb-4"><div class="icon-container mr-4" style="width:60px; height:60px;"><i class="fas fa-sync-alt text-yellow-300 text-2xl"></i></div><h3 class="text-xl font-bold text-white">周期化交易</h3></div>
+                <p class="text-gray-200 text-sm"><span class="text-yellow-300">目标：</span>把控每年关键行情，规避大环境风险，坚决不能时刻满仓。</p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 9 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_10.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-10 tracking-wider glow text-center">全流程自动化交易系统</div>
+        <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="process-card w-full md:w-1/3 p-6 flex flex-col items-center text-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-chart-bar text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">第一步：测试</h3>
+                <p class="text-gray-300 text-sm">根据历史数据测算策略收益，透明化评估，建立信任。</p>
+            </div>
+            <div class="text-yellow-300 text-2xl hidden md:block">&rarr;</div>
+            <div class="process-card w-full md:w-1/3 p-6 flex flex-col items-center text-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-laptop-code text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">第二步：模拟</h3>
+                <p class="text-gray-300 text-sm">在真实市场环境中无风险模拟，直观感受策略运作。</p>
+            </div>
+            <div class="text-yellow-300 text-2xl hidden md:block">&rarr;</div>
+            <div class="process-card w-full md:w-1/3 p-6 flex flex-col items-center text-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-robot text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">第三步：实盘</h3>
+                <p class="text-gray-300 text-sm">登陆自己原有的证券账户，开启完全智能化、自动化的交易。</p>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 10 / 13 </div>
+    </section>
+
+    <!-- FROM PAGE_11.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-8 md:p-12">
+        <div class="text-3xl md:text-4xl font-bold text-white mb-8 tracking-wider glow text-center">价值主张 - 智能交易的核心优势</div>
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="advantage-card p-6 rounded-lg">
+                <div class="flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width:60px; height:60px;"><i class="fas fa-brain text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-300 mb-2">全智能AI策略模型</h3>
+                        <ul class="text-gray-300 space-y-1 text-sm">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>达到人工无法达到的速度与高度</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>克服人性弱点与不足</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="advantage-card p-6 rounded-lg">
+                <div class="flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width:60px; height:60px;"><i class="fas fa-bolt text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-300 mb-2">对接券商VIP极速交易终端</h3>
+                        <ul class="text-gray-300 space-y-1 text-sm">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>保证更快的下单、平仓速度</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>提供专业级交易体验</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="advantage-card p-6 rounded-lg">
+                <div class="flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width:60px; height:60px;"><i class="fas fa-user-shield text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-300 mb-2">克服人性弱点，实现纪律性</h3>
+                        <ul class="text-gray-300 space-y-1 text-sm">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>无犹豫，无贪心，避免情绪化操作</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>自带止盈止损，锁定利润，控制风险</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="advantage-card p-6 rounded-lg">
+                <div class="flex items-start">
+                    <div class="icon-container mr-4 flex-shrink-0" style="width:60px; height:60px;"><i class="fas fa-eye text-yellow-300 text-2xl"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-300 mb-2">7x24小时全天候监控</h3>
+                        <ul class="text-gray-300 space-y-1 text-sm">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>机器人不间断监控行情</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i><span>完全无需人工干预，安心工作</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 11 / 13 </div>
+    </section>
+    
+    <!-- FROM PAGE_13.HTML -->
+    <section class="slide bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center justify-center p-8 md:p-12 text-center">
+        <div class="text-4xl md:text-5xl font-bold text-white mb-8 tracking-wider glow"> 让中国投资者投有所得 </div>
+        <div class="quote-box w-full md:w-3/4 p-6 mb-10">
+            <p class="text-xl md:text-2xl text-yellow-200/90 italic"> "路漫漫其修远兮，吾将上下而求索。" </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+            <div class="vision-card rounded-lg p-6 flex flex-col items-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-rocket text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">使命</h3>
+                <p class="text-gray-300 text-sm"> 通过AI量化技术，为中国投资者提供专业、稳定、高收益的智能交易解决方案。 </p>
+            </div>
+            <div class="vision-card rounded-lg p-6 flex flex-col items-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-eye text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">愿景</h3>
+                <p class="text-gray-300 text-sm"> 成为中国领先的AI量化交易平台，引领行业技术革新，打造具有国际竞争力的量化交易生态系统。 </p>
+            </div>
+            <div class="vision-card rounded-lg p-6 flex flex-col items-center">
+                <div class="icon-container mb-4" style="width:60px; height:60px;"><i class="fas fa-handshake text-yellow-300 text-2xl"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">价值观</h3>
+                <p class="text-gray-300 text-sm"> 以客户为中心，坚持技术创新，保持专业态度，为中国资本市场带来新的活力与机遇。 </p>
+            </div>
+        </div>
+        <div class="mt-auto pt-6 text-lg text-white"> 同新融通，<span class="text-yellow-300">共创量化交易的未来</span> </div>
+        <div class="absolute bottom-4 right-6 text-gray-500 text-sm"> 13 / 13 </div>
+    </section>
+
+    <!-- Footer with Disclaimer -->
+    <footer class="w-full max-w-screen-lg mx-auto p-4 text-center text-gray-500 text-xs">
+        <p>本量化策略的最终解释权归湖南智赢智能数字科技有限公司所有</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // D3.js visualization for the 73.2% negative return data (from page_4.html)
+            const donutChartContainer = document.getElementById('donut-chart-investors');
+            if (donutChartContainer) {
+                const width = donutChartContainer.clientWidth;
+                const height = donutChartContainer.clientHeight;
+                const radius = Math.min(width, height) / 2.5;
+
+                const svg = d3.select("#donut-chart-investors")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+                const data = [
+                    { label: "年度收益为负", value: 73.2, color: "#ef4444" },
+                    { label: "年度收益为正", value: 26.8, color: "#4ade80" }
+                ];
+
+                const pie = d3.pie().value(d => d.value).sort(null);
+                const arc = d3.arc().innerRadius(radius * 0.6).outerRadius(radius);
+
+                const arcs = svg.selectAll("arc").data(pie(data)).enter().append("g");
+                arcs.append("path").attr("d", arc).attr("fill", d => d.data.color).attr("stroke", "#1a2639").attr("stroke-width", 2).style("opacity", 0.9);
+                svg.append("text").attr("text-anchor", "middle").attr("dy", "0.1em").attr("fill", "#ffffff").style("font-size", "2rem").attr("font-weight", "bold").text("73.2%");
+                svg.append("text").attr("text-anchor", "middle").attr("dy", "1.8em").attr("fill", "#ffffff").style("font-size", "0.9rem").text("年度收益为负");
+            }
+
+            // Data for the market share bar chart (from page_5.html)
+            const barChartContainer = document.getElementById('bar-chart-market-share');
+            if (barChartContainer) {
+                const data = [
+                    { region: "美国", value: 75 },
+                    { region: "欧洲", value: 60 },
+                    { region: "中国香港", value: 50 },
+                    { region: "中国大陆", value: 5 }
+                ];
+
+                const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+                const width = barChartContainer.clientWidth - margin.left - margin.right;
+                const height = barChartContainer.clientHeight - margin.top - margin.bottom;
+
+                const svg = d3.select("#bar-chart-market-share").append("svg")
+                    .attr("width", "100%")
+                    .attr("height", "100%")
+                    .attr("viewBox", `0 0 ${barChartContainer.clientWidth} ${barChartContainer.clientHeight}`)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                const x = d3.scaleBand().domain(data.map(d => d.region)).range([0, width]).padding(0.4);
+                const y = d3.scaleLinear().domain([0, 100]).range([height, 0]);
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
+                svg.append("g").attr("class", "axis").call(d3.axisLeft(y).ticks(5).tickFormat(d => d + "%"));
+                svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("x", d => x(d.region)).attr("y", d => y(d.value)).attr("width", x.bandwidth()).attr("height", d => height - y(d.value)).attr("rx", 3).attr("ry", 3);
+                svg.selectAll(".label").data(data).enter().append("text").attr("class", "label").attr("x", d => x(d.region) + x.bandwidth() / 2).attr("y", d => y(d.value) - 5).attr("text-anchor", "middle").style("fill", "rgba(255, 215, 0, 0.9)").style("font-weight", "bold").style("font-size", "0.8rem").text(d => d.value + "%");
+            }
+        });
+    </script>
+</body>
+</html>
